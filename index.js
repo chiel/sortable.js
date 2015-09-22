@@ -18,7 +18,6 @@ var Sortable = function(el, options){
 
 	this.el = el;
 	this.options = fillIn(options || {}, Sortable.defaults);
-	console.log(this.el, this.options);
 	this._build();
 	this._setEvents();
 };
