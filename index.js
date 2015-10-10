@@ -66,6 +66,8 @@ Sortable.prototype._setEvents = function(){
 			return;
 		}
 
+		e.stopPropagation();
+
 		allowDrag = false;
 		self.dragging = true;
 		self.dragEl = e.target;
@@ -88,6 +90,8 @@ Sortable.prototype._setEvents = function(){
 	self.el.addEventListener('dragenter', function(e){
 		if (!self.dragging || e.target === self.placeholder) return;
 
+		e.stopPropagation();
+
 		var item = self.getItem(e.target);
 		if (!item) return;
 
@@ -103,6 +107,8 @@ Sortable.prototype._setEvents = function(){
 	 */
 	document.body.addEventListener('dragend', function(e){
 		if (!self.dragging) return;
+
+		e.stopPropagation();
 
 		self.dragging = false;
 		self.el.insertBefore(self.dragEl, self.placeholder);
