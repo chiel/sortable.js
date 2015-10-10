@@ -11,8 +11,8 @@ var indexOf = require('mout/array/indexOf');
  *
  * @return {Sortable}
  */
-var Sortable = function(el, options){
-	if (!(this instanceof Sortable)){
+var Sortable = function(el, options) {
+	if (!(this instanceof Sortable)) {
 		return new Sortable(el, options);
 	}
 
@@ -33,7 +33,7 @@ Sortable.defaults = {
 /**
  * Build required elements
  */
-Sortable.prototype._build = function(){
+Sortable.prototype._build = function() {
 	var placeholder = document.createElement('li');
 	placeholder.classList.add(this.options.placeholderClass);
 	this.placeholder = placeholder;
@@ -42,17 +42,17 @@ Sortable.prototype._build = function(){
 /**
  * Set required events
  */
-Sortable.prototype._setEvents = function(){
+Sortable.prototype._setEvents = function() {
 	var self = this;
 	var allowDrag = false;
 
 	/**
 	 * Use mousedown to check if handle is being pressed
 	 */
-	self.el.addEventListener('mousedown', function(e){
+	self.el.addEventListener('mousedown', function(e) {
 		if (!self.options.handle) allowDrag = true;
 
-		if (self.options.handle && e.target.matches(self.options.handle)){
+		if (self.options.handle && e.target.matches(self.options.handle)) {
 			allowDrag = true;
 		}
 	});
@@ -60,8 +60,8 @@ Sortable.prototype._setEvents = function(){
 	/**
 	 * Start dragging an element in the sortable
 	 */
-	self.el.addEventListener('dragstart', function(e){
-		if (!allowDrag){
+	self.el.addEventListener('dragstart', function(e) {
+		if (!allowDrag) {
 			e.preventDefault();
 			return;
 		}
@@ -76,7 +76,7 @@ Sortable.prototype._setEvents = function(){
 		e.dataTransfer.setData('text', '');
 
 		// delay needed cause the dragImage won't be created properly otherwise
-		setTimeout(function(){
+		setTimeout(function() {
 			var rect = e.target.getBoundingClientRect();
 			self.placeholder.style.height = (rect.bottom - rect.top) + 'px';
 			self.el.insertBefore(self.placeholder, e.target);
@@ -87,7 +87,7 @@ Sortable.prototype._setEvents = function(){
 	/**
 	 * This fires when the order potentially changes
 	 */
-	self.el.addEventListener('dragenter', function(e){
+	self.el.addEventListener('dragenter', function(e) {
 		if (!self.dragging || e.target === self.placeholder) return;
 
 		e.stopPropagation();
@@ -105,7 +105,7 @@ Sortable.prototype._setEvents = function(){
 	/**
 	 * Dragend should be attached to the body in case it happens outside the element
 	 */
-	document.body.addEventListener('dragend', function(e){
+	document.body.addEventListener('dragend', function(e) {
 		if (!self.dragging) return;
 
 		e.stopPropagation();
@@ -123,13 +123,13 @@ Sortable.prototype._setEvents = function(){
  *
  * @param {Element} el
  */
-Sortable.prototype.getItem = function(el){
+Sortable.prototype.getItem = function(el) {
 	var children = this.el.children;
 	var index;
 
-	while (el.parentNode){
+	while (el.parentNode) {
 		index = indexOf(children, el);
-		if (index !== -1 && el !== this.placeholder){
+		if (index !== -1 && el !== this.placeholder) {
 			return el;
 		}
 		el = el.parentNode;
