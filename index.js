@@ -27,7 +27,13 @@ var Sortable = function(el, options) {
  */
 Sortable.defaults = {
 	handle: '',
-	placeholderClass: 'sortable-placeholder'
+	placeholderClass: 'sortable-placeholder',
+	callbackEvents: {
+		mousedown: null,
+		dragstart: null,
+		dragenter: null,
+		dragend: null,
+	},
 };
 
 /**
@@ -37,6 +43,7 @@ Sortable.prototype._build = function() {
 	var placeholder = document.createElement('li');
 	placeholder.classList.add(this.options.placeholderClass);
 	this.placeholder = placeholder;
+	this.callbackEvents = this.options.callbackEvents;
 };
 
 /**
@@ -55,6 +62,12 @@ Sortable.prototype._setEvents = function() {
 		if (self.options.handle && e.target.matches(self.options.handle)) {
 			allowDrag = true;
 		}
+
+		// if a custom method exists, it triggers
+		if (typeof self.callbackEvents.mousedown === "function") {
+			self.callbackEvents.mousedown(e);
+		}
+
 	});
 
 	/**
@@ -81,6 +94,12 @@ Sortable.prototype._setEvents = function() {
 			self.placeholder.style.height = (rect.bottom - rect.top) + 'px';
 			self.el.insertBefore(self.placeholder, e.target);
 			e.target.style.display = 'none';
+
+			// if a custom method exists, it triggers
+			if (typeof self.callbackEvents.dragstart === "function") {
+				self.callbackEvents.dragstart(e);
+			}
+
 		}, 1);
 	});
 
@@ -100,6 +119,12 @@ Sortable.prototype._setEvents = function() {
 
 		var before = placeholderIndex === -1 || placeholderIndex > itemIndex;
 		self.el.insertBefore(self.placeholder, before ? item : item.nextSibling);
+
+		// if a custom method exists, it triggers
+		if (typeof self.callbackEvents.dragenter === "function") {
+			self.callbackEvents.dragenter(e);
+		}
+
 	});
 
 	/**
@@ -115,6 +140,12 @@ Sortable.prototype._setEvents = function() {
 		self.dragEl.style.display = 'block';
 		self.el.removeChild(self.placeholder);
 		self.placeholder.style.height = '';
+
+		// if a custom method exists, it triggers
+		if (typeof self.callbackEvents.dragend === "function") {
+			self.callbackEvents.dragend(e);
+		}
+
 	});
 };
 
