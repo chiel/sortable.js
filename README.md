@@ -28,6 +28,20 @@ var myList = document.querySelector('.my-list');
 new Sortable(myList);
 ```
 
+If you want used your own callbacks, add following option:
+
+```js
+function myDragEndHandle(e) {
+  // ...
+}
+
+new Sortable(myList, {
+  callbackEvents: {
+    dragend: myDragEndHandle.bind(this)
+  }
+});
+```
+
 If you want a stand-alone build of `sortable.js` you can:
 
 ```bash
@@ -52,6 +66,8 @@ Sortable accepts a few options to tweak it's behaviour.
   sortable.js uses a placeholder element, automatically setting its height to
   the height of the dragged element. If you want to modify the class this
   placeholder receives, you can specify this option.
+- `callbackEvents` - `null` by default. Four callbacks events are available :
+  `mousedown`, `dragstart`, `dragenter`, `dragend`.
 
 
 ## License
